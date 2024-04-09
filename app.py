@@ -35,5 +35,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    print("Server is running")
+    print("Server is running", file=sys.stdout)
     asyncio.run(main())
