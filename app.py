@@ -1,21 +1,15 @@
-'''
-Description: 
-Author: YaoXianMa
-Date: 2024-04-09 08:54:47
-LastEditors: YaoXianMa
-LastEditTime: 2024-04-09 08:55:07
-'''
-#!/usr/bin/env python
-
 import asyncio
 import http
 import signal
+import sys
 
 import websockets
 
 
-async def echo(websocket):
-    print(f"New connection from: {websocket.remote_address}")
+async def echo(websocket, path):
+    # 印出連線的位置到標準輸出流
+    print(f"New connection from: {websocket.remote_address}", file=sys.stdout)
+
     async for message in websocket:
         await websocket.send(message)
 
