@@ -6,12 +6,23 @@ import sys
 import websockets
 
 
+# 儲存所有連接的WebSocket物件的容器
+connected_clients = set()
+
+
 async def echo(websocket, path):
-    # 印出連線的位置到標準輸出流
+    # 將新連接的WebSocket物件加入容器
+    connected_clients.add(websocket)
     print(f"New connection from: {websocket.remote_address}", file=sys.stdout)
 
-    async for message in websocket:
-        await websocket.send(message)
+    try:
+        async for message in websocket:
+            # 使用遍歷迴圈向每個WebSocket物件傳送訊息（廣播）
+            for client in connected_clients:
+                await client.send(message)
+    finally:
+        # 連線結束時，從容器中移除相應的WebSocket物件
+        connected_clients.remove(websocket)
 
 
 async def health_check(path, request_headers):
