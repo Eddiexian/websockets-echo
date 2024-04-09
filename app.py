@@ -15,6 +15,7 @@ import websockets
 
 
 async def echo(websocket):
+    print(f"New connection from: {websocket.remote_address}")
     async for message in websocket:
         await websocket.send(message)
 
